@@ -1,0 +1,2 @@
+ruta del servidor xampp\htdocs\
+La contraseña de todos los usuarios es 1
