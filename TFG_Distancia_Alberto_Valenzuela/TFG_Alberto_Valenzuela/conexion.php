@@ -17,9 +17,9 @@ $pass = $_POST['password'];
         
     $usu = mysqli_query($conn,"SELECT * FROM usuarios WHERE dni  = '".$dni."'and contrasena = '".$pass."'");
     $log1 =mysqli_num_rows($usu);
-    
+    $pass1 = md5($pass);
     if($log1 == 1){
-        $quey = "SELECT * FROM usuarios WHERE dni='$dni' and contrasena= '$pass'";
+        $quey = "SELECT * FROM usuarios WHERE dni='$dni' and contrasena= '$pass1'";
         $val = mysqli_query($conn,$quey);
         $log =mysqli_fetch_array($val);
         if($log ['cat'] == 1){
