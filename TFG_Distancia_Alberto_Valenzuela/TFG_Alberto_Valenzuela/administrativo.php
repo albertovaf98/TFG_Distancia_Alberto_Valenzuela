@@ -187,6 +187,11 @@
             }
         </style>
         
+        <script>                       
+            function cerrarSesion() {
+
+                window.location.href = "index.php";
+                }
         </script>
         
     </head>
@@ -195,7 +200,7 @@
         <div id="login">
             <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             
-                <input type="number" name="nhc" id="nhc" placeholder="NHC">
+                <input type="number" name="nhc" id="nhc" maxlength="6" placeholder="NHC" required>
 
                 <label for="fecha">Fecha:</label>
                 <input type="date" name="fecha" id="fecha">
@@ -203,10 +208,11 @@
                 <label for="hora">Hora:</label>
                 <input type="time" name="hora" id="hora">
 
-                <input type="submit" name ="guardar" value="Guardar cambios">
+                <button  type="submit" title="guardar" name="guardar">Guardar Cambios</button>                 
             </form>
-
-   
+            
+            <button onclick="cerrarSesion()">Cerrar sesión</button>
+                
            
         </div>
     <?php 

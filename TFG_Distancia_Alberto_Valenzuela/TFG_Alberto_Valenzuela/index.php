@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
+<!doctype html>
+
+<html lang="es">
+    
+    <head>
+        
         <meta charset="utf-8">
         
-        <title> Resetear contraseña </title> 
+        <title> Historia Clinica Digital </title> 
         <link rel="icon" type="image/jpg" href="imagenes/favicon.jpg"/>   
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">       
@@ -12,7 +15,12 @@
         
         <link rel="stylesheet" href="css/estilos.css">
         
-        <style type="text/css">
+        
+        
+        <script type="text/javascript">
+        
+        </script>
+        <style>
             #contenedor {
                 display: flex;
                 align-items: center;
@@ -25,7 +33,7 @@
                 width: 100%;
                 height: 100%;
                 
-                background-image: url(imagenes/fondoweb.jpg);
+                background-image: url(imagenes/fondo.jpg);
                 background-position: center;
                 background-size: cover;
                 opacity: 0.70;
@@ -114,7 +122,7 @@
                 text-align: center;
                 width: 100%;
                 
-            
+                
                 
                 padding:20px 20px 20px 50px;
                 box-sizing: border-box;
@@ -178,44 +186,46 @@
                 width: 100vw;
                 overflow: hidden;
             }
+            img{
+                width: 300px;
+                height: 200px;
+            }
             .error{
             text-align: center;
-            
+            margin-top: 25%;
             color: red;
             font-weight: bold;
-            }
-            .bien{
-            text-align: center;
-            
-            color: green;
-            font-weight: bold;
-            }
-            
+        }
+       
         </style>
         
-        <script type="text/javascript">
-        
-        </script>
-  </head>
-  <body>      
-    <div id="contenedor">        
-        <div id="log">
-            <div id="derecho">
-                <div class="titulo">
-                   Borrar Usuario
-                </div>
+    </head>
+    
+    <body>
 
-            <div id="login">
+        
+        
+        <div id="contenedor">
+            
+            <div id="log">
+                <div id="derecho">
+                    <div class="titulo">
+                       <h3>HCD</h3>
+                    </div>
+                <div id="login">
+                    
                     <form method="post" id="loginform">
-                        <input id="usuario" type="text" name="usuario" placeholder="Usuario" maxlength="9" required>
-                                               
-                        <button  type="submit" title="Ingresar" name="Ingresar" href="administrador.html">Borrar</button>
+
+                        <input  type="text" name="usuario" placeholder="Usuario" maxlength="9" required>
+                       
+                        
+                        <input id="password" type="password" placeholder="Contraseña" name="password" required>
+                        
+                        <button type="submit" value ="submit" name="Ingresar" title="Ingresar" >Entrar</button>
                     </form>
                     <br>
-                        <a href="administrador.html" id="reset">Volver a pagina principal</a>
-                    <br>
-        
-                    <?php 
+                    <a href="reset.php" id="reset">Resetear contraseña</a>
+                    <?php
                         $sname= "localhost";
 
                         $unmae= "root";
@@ -224,29 +234,45 @@
                         
                         $db_name = "tfg";
                         
-                        $conn = mysqli_connect($sname, $unmae, $password, $db_name);
+                        $conn = mysqli_connect($sname, $unmae, $password, $db_name);  
+
                         
-                        if (!$conn) {
+                            if (isset($_POST['Ingresar'])) {
+                                $dni = $_POST['usuario'];
+                                $pass = $_POST['password'];        
+                                        
+                                $pass1 = md5($pass);    
+                                $usu = mysqli_query($conn,"SELECT * FROM usuarios WHERE dni  = '".$dni."'and contrasena = '".$pass1."'");
+                                $log1 =mysqli_num_rows($usu);
                         
-                        die("Error no hay conexion: ".mysqli_connect_error());
-                        
-                        }
-                        if (isset($_POST['Ingresar'])) {
-                            $dni = $_POST["usuario"];
-                            $res = mysqli_query($conn,"SELECT * FROM usuarios WHERE dni  = '$dni'");
-                            $log = mysqli_num_rows($res);
-                            if($log ==1){         
-                                $borrar=mysqli_query($conn, "DELETE FROM usuarios where dni ='$dni'");
-                                echo "<br>";
-                                echo '<div class="bien">Usuario eliminado correctamente</div>';
-                            }else if($log ==0){
-                                echo "<br>";
-                                echo '<div class="error">El usuario no existe</div>';
+                                if($log1 == 1){
+                                    $quey = "SELECT * FROM usuarios WHERE dni='$dni' and contrasena= '$pass1'";
+                                    $val = mysqli_query($conn,$quey);
+                                    $log =mysqli_fetch_array($val);
+                                    if($log ['cat'] == 1){
+                                        echo '<script>window.location.href = "administrador.html";</script>';
+                                    }
+                                    elseif($log ['cat'] == 2){
+                                        echo '<script>window.location.href = "medico.php";</script>';
+                                    }elseif($log ['cat'] == 3){ 
+                                        echo '<script>window.location.href = "enfermeria.php";</script>';
+                                    }elseif($log ['cat'] == 4){
+                                        echo '<script>window.location.href = "administrativo.php";</script>';
+                                    } 
+                                }else if($log1 == 0){
+                                    echo '<div class="error">Usuario o contraseña incorrectos.</div>';
+                                
+                                    
+                                }
                             }
-                    }
+
+
+                        
                     ?>
+                </div>
             </div>
         </div>
-    </div>                   
-  </body>
+        
+        
+    </body>
 </html>

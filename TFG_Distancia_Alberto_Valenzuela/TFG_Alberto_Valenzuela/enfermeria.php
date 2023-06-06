@@ -29,7 +29,7 @@
                 align-items: center;
                 justify-content: center;
                 
-                margin: 0;
+                margin:0 auto;
                 padding: 0;
                 min-width: 100vw;
                 min-height: 100vh;
@@ -44,7 +44,7 @@
             }
             
             #buscar{
-                margin-top:-30%;
+                margin-top:-10%;
                 margin-right:5%;
             }
             input{
@@ -93,7 +93,9 @@
   
             th, td {
                 padding: 10px;
-                text-align: left;
+                text-align: center;
+                background-color:  #CFD1DA;
+                
             }
             
             th {
@@ -107,6 +109,7 @@
             
             td:first-child, th:first-child {
                 width: 20%;
+                
             }
             
             td:nth-child(2), th:nth-child(2) {
@@ -124,12 +127,15 @@
             td:last-child, th:last-child {
                 width: 20%;
             }
-            tr.selected {
-			background-color: yellow;
-		}
+            
        
         </style>
         
+        <script>                       
+            function cerrarSesion() {
+
+                window.location.href = "index.php";
+                }
         </script>
         
     </head>
@@ -137,8 +143,10 @@
     <body>
         <div id="buscar">
             <form method="post">
-            <input  type="number" name="nhc" placeholder="NHC Paciente" required>
+            <input  type="number" name="nhc" placeholder="NHC Paciente" maxlength="6" required>
             <button type="submit" value ="submit" title="Ingresar" >Buscar</button>
+            
+            <button onclick="cerrarSesion()">Cerrar sesión</button>       
             </form>
         <br>
        
@@ -152,45 +160,42 @@
             
             
        
-<?php
-        $sname= "localhost";
+    <?php
+            $sname= "localhost";
 
-        $unmae= "root";
-        
-        $password = "";
-        
-        $db_name = "tfg";                
-        
-        $conn = mysqli_connect($sname, $unmae, $password, $db_name);
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['nhc'])) {                
-                $nhc = $_POST['nhc'];
-                $consul = mysqli_query($conn,"SELECT * FROM pacientes  WHERE NHC  = '$nhc'");
-                $rev = mysqli_num_rows($consul);
-                if($rev == 1){
-                    $consul = mysqli_query($conn,"SELECT * FROM consulta  WHERE NHC_paciente  = '$nhc'");
+            $unmae= "root";
+            
+            $password = "";
+            
+            $db_name = "tfg";                
+            
+            $conn = mysqli_connect($sname, $unmae, $password, $db_name);
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['nhc'])) {                
+                    $nhc = $_POST['nhc'];
+                    $consul = mysqli_query($conn,"SELECT * FROM pacientes  WHERE NHC  = '$nhc'");
+                    $rev = mysqli_num_rows($consul);
+                    if($rev == 1){
+                        $consul = mysqli_query($conn,"SELECT * FROM consulta  WHERE NHC_paciente  = '$nhc'");
+                            
+                        while ($cont = mysqli_fetch_array($consul)){   
+                            echo '<tr>';               
+                            echo "<td>".$cont['NHC_paciente'] ."</td>";
+                            echo "<td>".$cont['fech_consul']."</td>";
+                            echo "<td>".$cont['consulta'] ."</td>";
+                            echo'</tr>';
+                        }
                         
-                    while ($cont = mysqli_fetch_array($consul)){   
-                        echo '<tr>';               
-                        echo "<td>".$cont['NHC_paciente'] ."</td>";
-                        echo "<td>".$cont['fech_consul']."</td>";
-                        echo "<td>".$cont['consulta'] ."</td>";
-                        echo'</tr>';
                     }
                     
                 }
-                
-            }
-        }
-        
-        
-
-        
+            }       
+                    
         ?>
                 
 
-            </table>
+            </table> 
          </div>
     </body>
 </html>

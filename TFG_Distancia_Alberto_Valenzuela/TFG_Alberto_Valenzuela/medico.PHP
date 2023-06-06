@@ -100,7 +100,12 @@
             }
            	
         </style>
-        
+        <script>                       
+            function cerrarSesion() {
+
+                window.location.href = "index.php";
+                }
+        </script>
         
     
   </head>
@@ -155,7 +160,7 @@
             }
                     
             echo "</table>";
-         
+            
             if (isset($_POST['agregar'])) {
                 $n = $_POST['id'];
                 $cod = $_POST['cod'];
@@ -169,7 +174,7 @@
 
                     mysqli_close($conn);
             ?>
-           
+           <button onclick="cerrarSesion()">Cerrar sesión</button>
         
         
         </div>
